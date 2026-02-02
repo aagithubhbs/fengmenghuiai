@@ -2,11 +2,108 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>我的个人网站</title>
+  <title>停车场信息管理</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 40px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      font-size: 14px;
+    }
+    button {
+      background: #1677ff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0958d9;
+    }
+    .parking-item {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+    .parking-item:last-child {
+      border-bottom: none;
+    }
+    .small {
+      color: #666;
+      font-size: 13px;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>你好，我是 He Chunhui 👋</h1>
-  <p>这是我第一个免费的个人网站。</p>
-  <p>我目前从事 AI / 数据分析 / 控制算法相关工作。</p>
+  <div class="container">
+    <h1>🚗 停车场列表</h1>
+
+    <input id="name" placeholder="停车场名称">
+    <input id="address" placeholder="地址">
+    <input id="spaces" type="number" placeholder="车位数量">
+    <button onclick="addParking()">➕ 添加停车场</button>
+
+    <hr>
+
+    <div id="list"></div>
+  </div>
+
+  <script>
+    let parkingList = JSON.parse(localStorage.getItem("parkingList")) || [];
+
+    function render() {
+      const list = document.getElementById("list");
+      list.innerHTML = "";
+
+      parkingList.forEach((p, index) => {
+        const div = document.createElement("div");
+        div.className = "parking-item";
+        div.innerHTML = `
+          <strong>${p.name}</strong><br>
+          <span class="small">📍 ${p.address}</span><br>
+          <span class="small">🅿️ 车位：${p.spaces}</span>
+        `;
+        list.appendChild(div);
+      });
+
+      localStorage.setItem("parkingList", JSON.stringify(parkingList));
+    }
+
+    function addParking() {
+      const name = document.getElementById("name").value;
+      const address = document.getElementById("address").value;
+      const spaces = document.getElementById("spaces").value;
+
+      if (!name || !address || !spaces) {
+        alert("请填写完整信息");
+        return;
+      }
+
+      parkingList.push({ name, address, spaces });
+      render();
+
+      document.getElementById("name").value = "";
+      document.getElementById("address").value = "";
+      document.getElementById("spaces").value = "";
+    }
+
+    render();
+  </script>
 </body>
 </html>
