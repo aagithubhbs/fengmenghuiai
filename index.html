@@ -10,134 +10,97 @@
       background: #f5f7fa;
       padding: 40px;
     }
-    h1 {
-      text-align: center;
-    }
     .container {
       max-width: 700px;
       margin: auto;
       background: #fff;
       padding: 20px 30px;
       border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     input, button {
       padding: 10px;
       margin: 5px 0;
       width: 100%;
-      font-size: 14px;
     }
     button {
       background: #1677ff;
       color: white;
       border: none;
-      border-radius: 4px;
       cursor: pointer;
-    }
-    button:hover {
-      background: #0958d9;
     }
     .parking-item {
       border-bottom: 1px solid #eee;
       padding: 10px 0;
     }
-    .parking-item:last-child {
-      border-bottom: none;
-    }
-    .small {
-      color: #666;
-      font-size: 13px;
-    }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>🚗 停车场列表</h1>
+<div class="container">
+  <h1>🚗 停车场列表</h1>
 
-    <input id="name" placeholder="停车场名称">
-    <input id="address" placeholder="地址">
-    <input id="spaces" type="number" placeholder="车位数量">
-    <button onclick="addParking()">➕ 添加停车场</button>
+  <input id="name" placeholder="停车场名称">
+  <input id="address" placeholder="地址">
+  <input id="total" type="number" placeholder="总车位">
+  <input id="free" type="number" placeholder="剩余车位">
 
-    <hr>
+  <button onclick="addParking()">➕ 添加停车场</button>
 
-    <div id="list"></div>
-  </div>
+  <hr>
+  <div id="list"></div>
+</div>
 
-  <ul id="list"></ul>
-  
-  <script>
-    const supabase = supabase.createClient(
-      '你的 SUPABASE_URL',
-      '你的 ANON_KEY'
-    )
-  
-    async function load() {
-      const { data } = await supabase
-        .from('parkings')
-        .select('*')
-        .order('id', { ascending: false })
-  
-      document.getElementById('list').innerHTML =
-        data.map(p =>
-          `<li>${p.name}｜${p.address}｜剩余 ${p.free}/${p.total}</li>`
-        ).join('')
+<script>
+  const supabaseClient = supabase.createClient(
+    '你的_SUPABASE_URL',
+    '你的_ANON_KEY'
+  )
+
+  async function loadParkings() {
+    const { data, error } = await supabaseClient
+      .from('parkings')
+      .select('*')
+      .order('id', { ascending: false })
+
+    if (error) {
+      alert(error.message)
+      return
     }
-  
-    async function addParking() {
-      await supabase.from('parkings').insert({
-        name: name.value,
-        address: address.value,
-        total: total.value,
-        free: free.value
-      })
-      load()
-    }
-  
-    load()
-  </script>
 
-  <script>
-    let parkingList = JSON.parse(localStorage.getItem("parkingList")) || [];
-
-    function render() {
-      const list = document.getElementById("list");
-      list.innerHTML = "";
-
-      parkingList.forEach((p, index) => {
-        const div = document.createElement("div");
-        div.className = "parking-item";
-        div.innerHTML = `
+    document.getElementById('list').innerHTML =
+      data.map(p => `
+        <div class="parking-item">
           <strong>${p.name}</strong><br>
-          <span class="small">📍 ${p.address}</span><br>
-          <span class="small">🅿️ 车位：${p.spaces}</span>
-        `;
-        list.appendChild(div);
-      });
+          📍 ${p.address}<br>
+          🅿️ 剩余 ${p.free}/${p.total}
+        </div>
+      `).join('')
+  }
 
-      localStorage.setItem("parkingList", JSON.stringify(parkingList));
+  async function addParking() {
+    const name = document.getElementById('name').value
+    const address = document.getElementById('address').value
+    const total = Number(document.getElementById('total').value)
+    const free = Number(document.getElementById('free').value)
+
+    if (!name || !address) {
+      alert('请填写完整信息')
+      return
     }
 
-    function addParking() {
-      const name = document.getElementById("name").value;
-      const address = document.getElementById("address").value;
-      const spaces = document.getElementById("spaces").value;
+    const { error } = await supabaseClient
+      .from('parkings')
+      .insert({ name, address, total, free })
 
-      if (!name || !address || !spaces) {
-        alert("请填写完整信息");
-        return;
-      }
-
-      parkingList.push({ name, address, spaces });
-      render();
-
-      document.getElementById("name").value = "";
-      document.getElementById("address").value = "";
-      document.getElementById("spaces").value = "";
+    if (error) {
+      alert(error.message)
+      return
     }
 
-    render();
-  </script>
+    loadParkings()
+  }
+
+  loadParkings()
+</script>
 </body>
 </html>
