@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>停车场信息管理</title>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -63,6 +64,39 @@
 
     <div id="list"></div>
   </div>
+
+  <ul id="list"></ul>
+  
+  <script>
+    const supabase = supabase.createClient(
+      '你的 SUPABASE_URL',
+      '你的 ANON_KEY'
+    )
+  
+    async function load() {
+      const { data } = await supabase
+        .from('parkings')
+        .select('*')
+        .order('id', { ascending: false })
+  
+      document.getElementById('list').innerHTML =
+        data.map(p =>
+          `<li>${p.name}｜${p.address}｜剩余 ${p.free}/${p.total}</li>`
+        ).join('')
+    }
+  
+    async function addParking() {
+      await supabase.from('parkings').insert({
+        name: name.value,
+        address: address.value,
+        total: total.value,
+        free: free.value
+      })
+      load()
+    }
+  
+    load()
+  </script>
 
   <script>
     let parkingList = JSON.parse(localStorage.getItem("parkingList")) || [];
