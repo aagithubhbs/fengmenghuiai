@@ -19,14 +19,13 @@
     }
     input, button {
       padding: 10px;
-      margin: 5px 0;
+      margin: 6px 0;
       width: 100%;
     }
     button {
       background: #1677ff;
       color: white;
       border: none;
-      cursor: pointer;
     }
     .parking-item {
       border-bottom: 1px solid #eee;
@@ -46,18 +45,17 @@
 
   <button onclick="addParking()">➕ 添加停车场</button>
 
-  <hr>
   <div id="list"></div>
 </div>
 
 <script>
-  const supabaseClient = supabase.createClient(
+  const supabase = window.supabase.createClient(
     '你的_SUPABASE_URL',
     '你的_ANON_KEY'
   )
 
-  async function loadParkings() {
-    const { data, error } = await supabaseClient
+  async function load() {
+    const { data, error } = await supabase
       .from('parkings')
       .select('*')
       .order('id', { ascending: false })
@@ -71,8 +69,8 @@
       data.map(p => `
         <div class="parking-item">
           <strong>${p.name}</strong><br>
-          📍 ${p.address}<br>
-          🅿️ 剩余 ${p.free}/${p.total}
+          ${p.address}<br>
+          剩余 ${p.free} / ${p.total}
         </div>
       `).join('')
   }
@@ -80,27 +78,17 @@
   async function addParking() {
     const name = document.getElementById('name').value
     const address = document.getElementById('address').value
-    const total = Number(document.getElementById('total').value)
-    const free = Number(document.getElementById('free').value)
+    const total = document.getElementById('total').value
+    const free = document.getElementById('free').value
 
-    if (!name || !address) {
-      alert('请填写完整信息')
-      return
-    }
+    await supabase.from('parkings').insert({
+      name, address, total, free
+    })
 
-    const { error } = await supabaseClient
-      .from('parkings')
-      .insert({ name, address, total, free })
-
-    if (error) {
-      alert(error.message)
-      return
-    }
-
-    loadParkings()
+    load()
   }
 
-  loadParkings()
+  load()
 </script>
 </body>
 </html>
