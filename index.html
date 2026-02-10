@@ -109,6 +109,21 @@
     .subscribe()
 
   load()
+
+  // 👇 Realtime 订阅
+  const channel = supabaseClient
+    .channel('parkings-realtime')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'parkings' },
+      payload => {
+        console.log('📡 数据变更:', payload)
+        load() // 自动刷新列表
+      }
+    )
+    .subscribe(status => {
+      console.log('🔌 Realtime 状态:', status)
+    })
 </script>
 </body>
 </html>
