@@ -75,7 +75,7 @@
 
     async function loadParkingLots() {
       const { data, error } = await supabaseClient
-        .from('parking_lots')
+        .from('parkings')
         .select('*')
     
       if (!error) {
