@@ -39,16 +39,32 @@
     
 <body>
 <div class="container">
-  <h1>🚗 列表</h1>
 
-  <input id="name" placeholder="名称">
-  <input id="address" placeholder="地址">
-  <input id="total" type="number" placeholder="总">
-  <input id="free" type="number" placeholder="剩余">
+  <!-- 🔐 登录 / 注册 -->
+  <div id="authBox">
+    <h2>🔐 登录 / 注册</h2>
+    <input id="email" placeholder="邮箱">
+    <input id="password" type="password" placeholder="密码">
+    <button onclick="login()">登录</button>
+    <button onclick="register()">注册</button>
+    <p id="authMsg"></p>
+  </div>
 
-  <button onclick="addParking()">➕ 添加</button>
+  <!-- 🚗 停车场功能区 -->
+  <div id="appBox" style="display:none;">
+    <h1>🚗 列表</h1>
 
-  <div id="list"></div>
+    <input id="name" placeholder="名称">
+    <input id="address" placeholder="地址">
+    <input id="total" type="number" placeholder="总">
+    <input id="free" type="number" placeholder="剩余">
+
+    <button onclick="addParking()">➕ 添加</button>
+    <button onclick="logout()">🚪 退出登录</button>
+
+    <div id="list"></div>
+  </div>
+
 </div>
 
 <script>
