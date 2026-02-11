@@ -69,6 +69,25 @@
       return
     }
 
+    document.addEventListener("DOMContentLoaded", () => {
+      loadParkingLots()
+    })
+
+    async function loadParkingLots() {
+      const { data, error } = await supabase
+        .from('parking_lots')
+        .select('*')
+    
+      if (!error) {
+        renderParkingLots(data)
+      }
+    }
+
+    function renderParkingLots(list) {
+      const div = document.getElementById("parking-list")
+      div.innerHTML = list.map(p => `<p>${p.name}</p>`).join('')
+    }
+
     document.getElementById('list').innerHTML =
       data.map(p => `
         <div class="parking-item">
