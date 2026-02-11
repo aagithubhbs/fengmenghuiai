@@ -57,35 +57,23 @@
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhneHVraGttYnh3aHBzdXhpa3dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxMDA1NDEsImV4cCI6MjA4NTY3NjU0MX0.NJFbqCgqeyfqVms9XAiugNXwV24WJg9zh9ZzF7HEUGM'
   )
  
+  // ✅ 页面加载完成 → 自动拉数据
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("📄 页面加载完成，开始拉数据")
+    load()
+  })
+
   async function load() {
     const { data, error } = await supabaseClient
       .from('parkings')
       .select('*')
       .order('id', { ascending: false })
-    console.log('load() 返回结果', { data, error })
+
+    console.log('📦 load() 返回', data, error)
 
     if (error) {
       alert(error.message)
       return
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      loadParkingLots()
-    })
-
-    async function loadParkingLots() {
-      const { data, error } = await supabaseClient
-        .from('parkings')
-        .select('*')
-    
-      if (!error) {
-        renderParkingLots(data)
-      }
-    }
-
-    function renderParkingLots(list) {
-      const div = document.getElementById("parking-list")
-      div.innerHTML = list.map(p => `<p>${p.name}</p>`).join('')
     }
 
     document.getElementById('list').innerHTML =
@@ -110,21 +98,20 @@
 
     load()
   }
- 
-  // 👇 Realtime 订阅
-  const channel = supabaseClient
+
+  // ✅ Realtime
+  supabaseClient
     .channel('parkings-realtime')
     .on(
       'postgres_changes',
       { event: '*', schema: 'public', table: 'parkings' },
       payload => {
-        console.log('📡 数据变更:', payload)
-        load() // 自动刷新列表
+        console.log('📡 实时更新', payload)
+        load()
       }
     )
-    .subscribe(status => {
-      console.log('🔌 Realtime 状态:', status)
-    })
+    .subscribe()
+  
 </script>
 </body>
 </html>
