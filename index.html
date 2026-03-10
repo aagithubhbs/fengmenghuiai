@@ -165,8 +165,9 @@
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://unpkg.com/distpicker/dist/distpicker.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/distpicker/dist/distpicker.min.js"></script>
 
 </head>
 
@@ -188,7 +189,7 @@
 
 $(function(){
 
-  new Distpicker('#distpicker')
+  $('#distpicker').distpicker()
 
 })
 
