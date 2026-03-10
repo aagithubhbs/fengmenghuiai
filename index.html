@@ -42,10 +42,15 @@
 
     <h1>🚗 列表</h1>
 
-    <input id="name" placeholder="名称">
-    <input id="address" placeholder="地址">
-    <input id="total" type="number" placeholder="总">
-    <input id="free" type="number" placeholder="剩余">
+    <input id="parking_name" placeholder="停车场名称">
+    <input id="nearest_subway" placeholder="邻近地铁站">
+    <input id="fee_standard" placeholder="是否免费">
+    <input id="garage_type" placeholder="地面/地库类型">
+    <input id="charging_pile" placeholder="是否有充电桩">
+    <input id="update_time" placeholder="上传时间">
+    <input id="toll_sign" placeholder="收费牌">
+    <input id="contributors" placeholder="贡献者">
+    <input id="remark" placeholder="备注">
 
     <button onclick="addParking()">➕ 添加</button>
 
@@ -83,21 +88,33 @@
     document.getElementById('list').innerHTML =
       data.map(p => `
         <div class="parking-item">
-          <strong>${p.name}</strong><br>
-          ${p.address}<br>
-          剩余 ${p.free} / ${p.total}
+          <strong>${p.parking_name}</strong><br>
+          就近${p.nearest_subway}<br>
+          ${p.fee_standard}<br>
+          ${p.garage_type}<br>
+          ${p.charging_pile}<br>
+          ${p.update_time}<br>
+          ${p.toll_sign}<br>
+          ${p.contributors}<br>
+          ${p.remark}<br>
+          
         </div>
       `).join('')
   }
 
   async function addParking() {
-    const name = document.getElementById('name').value
-    const address = document.getElementById('address').value
-    const total = document.getElementById('total').value
-    const free = document.getElementById('free').value
+    const parking_name = document.getElementById('parking_name').value
+    const nearest_subway = document.getElementById('nearest_subway').value
+    const fee_standard = document.getElementById('fee_standard').value
+    const garage_type = document.getElementById('garage_type').value
+    const charging_pile = document.getElementById('charging_pile').value
+    const update_time = document.getElementById('update_time').value
+    const toll_sign = document.getElementById('toll_sign').value
+    const contributors = document.getElementById('contributors').value
+    const remark = document.getElementById('remark').value
 
     await supabaseClient.from('parkings').insert({
-      name, address, total, free
+      parking_name, nearest_subway, fee_standard, garage_type, charging_pile, update_time, toll_sign, contributors, remark
     })
 
     load()
