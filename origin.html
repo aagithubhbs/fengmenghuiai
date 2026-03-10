@@ -1,0 +1,275 @@
+<!--
+<!DOCTYPE html> 
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>停车场信息管理</title>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://unpkg.com/distpicker/dist/distpicker.js"></script>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 40px;
+    } 
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 8px;
+    } 
+    input, button {
+      padding: 10px;
+      margin: 6px 0;
+      width: 100%;
+    } 
+    button {
+      background: #1677ff;
+      color: white;
+      border: none;
+    }
+    .parking-item {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+    h1 {
+      font-size:10%;
+    }
+  </style>
+</head>
+    
+<body>
+
+    <div id="distpicker">
+      <select data-province="选择省"></select>
+      <select data-city="选择市"></select>
+      <select data-district="选择区"></select>
+    </div>
+  
+    <div class="container">
+    
+        <h1>🚗 列表</h1>
+    
+        <input id="parking_name" placeholder="停车场名称">
+        <input id="nearest_subway" placeholder="邻近地铁站">
+        <input id="fee_standard" placeholder="是否免费">
+        <input id="garage_type" placeholder="地面/地库类型">
+        <input id="charging_pile" placeholder="是否有充电桩">
+        <input id="update_time" placeholder="上传时间">
+        <input id="toll_sign" placeholder="收费牌">
+        <input id="contributors" placeholder="贡献者">
+        <input id="remark" placeholder="备注">
+    
+        <button onclick="addParking()">➕ 添加</button>
+    
+        <div id="list"></div>
+    
+    </div>
+
+    <script>    
+    $(function(){
+      new Distpicker('#distpicker')
+    })
+    </script>
+
+    <script>
+      const supabaseClient = window.supabase.createClient(
+        'https://xgxukhkmbxwhpsuxikwj.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhneHVraGttYnh3aHBzdXhpa3dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxMDA1NDEsImV4cCI6MjA4NTY3NjU0MX0.NJFbqCgqeyfqVms9XAiugNXwV24WJg9zh9ZzF7HEUGM'
+      )
+    
+      setInterval(load, 60000000)
+     
+      // ✅ 页面加载完成 → 自动拉数据
+      document.addEventListener("DOMContentLoaded", () => {
+        console.log("📄 页面加载完成，开始拉数据")
+        load()
+      })
+    
+      async function load() {
+        const { data, error } = await supabaseClient
+          .from('parkings')
+          .select('*')
+          .order('id', { ascending: false })
+    
+        console.log('📦 load() 返回', data, error)
+    
+        if (error) {
+          alert(error.message)
+          return
+        }
+    
+        document.getElementById('list').innerHTML =
+          data.map(p => `
+            <div class="parking-item">
+              <strong>${p.parking_name}</strong><br>
+              就近${p.nearest_subway}<br>
+              ${p.fee_standard}<br>
+              ${p.garage_type}<br>
+              ${p.charging_pile}<br>
+              ${p.update_time}<br>
+              ${p.toll_sign}<br>
+              ${p.contributors}<br>
+              ${p.remark}<br>
+              
+            </div>
+          `).join('')
+      }
+    
+      async function addParking() {
+        const parking_name = document.getElementById('parking_name').value
+        const nearest_subway = document.getElementById('nearest_subway').value
+        const fee_standard = document.getElementById('fee_standard').value
+        const garage_type = document.getElementById('garage_type').value
+        const charging_pile = document.getElementById('charging_pile').value
+        const update_time = document.getElementById('update_time').value
+        const toll_sign = document.getElementById('toll_sign').value
+        const contributors = document.getElementById('contributors').value
+        const remark = document.getElementById('remark').value
+    
+        await supabaseClient.from('parkings').insert({
+          parking_name, nearest_subway, fee_standard, garage_type, charging_pile, update_time, toll_sign, contributors, remark
+        })
+    
+        load()
+      }
+    
+      // ✅ Realtime
+      supabaseClient
+        .channel('parkings-realtime')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'parkings' },
+          payload => {
+            console.log('📡 实时更新', payload)
+            load()
+          }
+        )
+        .subscribe()
+      
+    </script>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>城市选择的三种实现</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div>
+        <fieldset>
+            <legend>方法一：下拉选择框实现省市区（县）三级联动</legend>
+            <form action="#">
+                <label for="addr-show">您选择的是：
+                    <input type="text" value="" id="addr-show">
+                </label>
+                <br />
+
+                <!--省份选择-->
+                <select id="prov" onchange="showCity(this)">
+                    <option value="">=请选择省份=</option>
+                </select>
+
+                <!--城市选择-->
+                <select id="city" onchange="showCountry(this)">
+                    <option value="">=请选择城市=</option>
+                </select>
+
+                <!--县区选择-->
+                <select id="country" onchange="selecCountry(this)">
+                    <option value="">=请选择县区=</option>
+                </select>
+                <button type="button" class="btn met1" onClick="showAddr()">确定</button>
+            </form>
+        </fieldset>
+
+        <fieldset>
+            <legend>下拉选择框实现省市区（县）三级联动以及获得地区行政编码</legend>
+            <form action="#">
+                <label for="addr-show-number">您选择的是：
+                    <input type="text" value="" id="addr-show-number">
+                </label>
+                <br />
+
+                <!--省份选择-->
+                <select id="prov-number" onchange="showCity04(this)">
+                    <option value="">=请选择省份=</option>
+                </select>
+
+                <!--城市选择-->
+                <select id="city-number" onchange="showCountry04(this)">
+                    <option value="">=请选择城市=</option>
+                </select>
+
+                <!--县区选择-->
+                <select id="country-number" onchange="selecCountry04(this)">
+                    <option value="">=请选择县区=</option>
+                </select>
+                <button type="button" class="btn met04" onClick="showAddr04()">确定</button>
+            </form>
+        </fieldset>
+    </div>
+    <!--**********************************华丽丽*************************************-->
+
+    <div>
+        <fieldset>
+            <legend>方法二：按级选中省市县/区</legend>
+            <label for="addr-show02">您选择的是：
+                <input type="text" id="addr-show02">
+            </label>
+            <div id="addr-choice">
+                <ul id="title-wrap">
+                    <li value="0">省份</li>
+                    <li value="1">城市</li>
+                    <li value="2">县区</li>
+                </ul>
+                <div id="show-panel">
+                    <ul id="addr-wrap">
+                    </ul>
+                </div>
+            </div>
+            <button type="button" class="btn met2">确定</button>
+        </fieldset>
+    </div>
+    <!--**********************************华丽丽*************************************-->
+    <div>
+        <fieldset>
+            <legend>方法三：按字母顺序选中城市</legend>
+            <label for="addr-show03">您选择的是：
+                <input type="text" id="addr-show03">
+            </label>
+            <div id="data-wrap">
+                <ul id="data-order">
+                    <li value='0'>热门</li>
+                    <li value='1'>ABCD</li>
+                    <li value='2'>EFGH</li>
+                    <li value='3'>JKLM</li>
+                    <li value='4'>NPQR</li>
+                    <li value='5'>STWX</li>
+                    <li value='6'>YZ</li>
+                </ul>
+                <div id="data-show"></div>
+            </div>
+        </fieldset>
+    </div>
+
+    <script src="city.js"></script>
+    <script src="city02.js"></script>
+    <script src="city03.js"></script>
+    <script src="method01.js"></script>
+    <script src="method02.js"></script>
+    <script src="method03.js"></script>
+    <script src="method04.js"></script>
+</body>
+
+</html>
