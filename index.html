@@ -38,32 +38,39 @@
 </head>
     
 <body>
-
-  <div id="distpicker">
-    <select id="province"></select>
-    <select id="city"></select>
-    <select id="district"></select>
-  </div>
   
-<div class="container">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/distpicker/dist/distpicker.js"></script>
+    
+    <script>
+    new Distpicker('#distpicker')
+    </script>
 
-    <h1>🚗 列表</h1>
-
-    <input id="parking_name" placeholder="停车场名称">
-    <input id="nearest_subway" placeholder="邻近地铁站">
-    <input id="fee_standard" placeholder="是否免费">
-    <input id="garage_type" placeholder="地面/地库类型">
-    <input id="charging_pile" placeholder="是否有充电桩">
-    <input id="update_time" placeholder="上传时间">
-    <input id="toll_sign" placeholder="收费牌">
-    <input id="contributors" placeholder="贡献者">
-    <input id="remark" placeholder="备注">
-
-    <button onclick="addParking()">➕ 添加</button>
-
-    <div id="list"></div>
-
-</div>
+    <div id="distpicker">
+        <select id="province" data-province="选择省"></select>
+        <select id="city" data-city="选择市"></select>
+        <select id="district" data-district="选择区"></select>
+    </div>
+  
+    <div class="container">
+    
+        <h1>🚗 列表</h1>
+    
+        <input id="parking_name" placeholder="停车场名称">
+        <input id="nearest_subway" placeholder="邻近地铁站">
+        <input id="fee_standard" placeholder="是否免费">
+        <input id="garage_type" placeholder="地面/地库类型">
+        <input id="charging_pile" placeholder="是否有充电桩">
+        <input id="update_time" placeholder="上传时间">
+        <input id="toll_sign" placeholder="收费牌">
+        <input id="contributors" placeholder="贡献者">
+        <input id="remark" placeholder="备注">
+    
+        <button onclick="addParking()">➕ 添加</button>
+    
+        <div id="list"></div>
+    
+    </div>
 
   
 
