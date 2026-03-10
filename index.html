@@ -1,3 +1,4 @@
+/*
 <!DOCTYPE html> 
 <html lang="zh">
 <head>
@@ -151,5 +152,46 @@
         .subscribe()
       
     </script>
+</body>
+</html>
+*/
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+<meta charset="UTF-8">
+<title>停车场信息管理</title>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/distpicker/dist/distpicker.js"></script>
+
+</head>
+
+<body>
+
+<h2>选择地区</h2>
+
+<div id="distpicker">
+
+<select data-province="选择省"></select>
+
+<select data-city="选择市"></select>
+
+<select data-district="选择区"></select>
+
+</div>
+
+<script>
+
+$(function(){
+
+  new Distpicker('#distpicker')
+
+})
+
+</script>
+
 </body>
 </html>
