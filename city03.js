@@ -1,7 +1,7 @@
 /**
  * 在地区行政查询平台获取的信息
  */
-const cityList =
+const cityList = 
     {
         "广东省": {
             "city": {
