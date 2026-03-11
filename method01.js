@@ -6,6 +6,10 @@ var prov = document.getElementById('prov');
 var city = document.getElementById('city');
 var country = document.getElementById('country');
 
+if(btn){
+    btn.disabled = true;
+}
+
 /*用于保存当前所选的省市区*/
 var current = {
     prov: '',
