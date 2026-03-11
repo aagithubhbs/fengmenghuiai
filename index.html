@@ -46,38 +46,61 @@
 </head>
     
 <body>
+      <div>
+              <fieldset>
+                  <legend>下拉选择省市区（县）</legend>
+                  <form action="#">
+                      #<label for="addr-show">您选择的是：
+                      #    <input type="text" value="" id="addr-show">
+                      #</label>
+                      #<br />
+      
+                      <!--省份选择-->
+                      <select id="prov" onchange="showCity(this)">
+                          <option value="">=请选择省份=</option>
+                      </select>
+      
+                      <!--城市选择-->
+                      <select id="city" onchange="showCountry(this)">
+                          <option value="">=请选择城市=</option>
+                      </select>
+      
+                      <!--县区选择-->
+                      <select id="country" onchange="selecCountry(this)">
+                          <option value="">=请选择县区=</option>
+                      </select>
+                      <button type="button" class="btn met1" onClick="showAddr()">确定</button>
+                  </form>
+              </fieldset>
+      
+              
+          </div>
+    
 
-    <div id="distpicker">
-      <select data-province="选择省"></select>
-      <select data-city="选择市"></select>
-      <select data-district="选择区"></select>
-    </div>
-  
-    <div class="container">
+   
+      <script src="city.js"></script>
+      <script src="method01.js"></script>
     
-        <h1>🚗 列表</h1>
-    
-        <input id="parking_name" placeholder="停车场名称">
-        <input id="nearest_subway" placeholder="邻近地铁站">
-        <input id="fee_standard" placeholder="是否免费">
-        <input id="garage_type" placeholder="地面/地库类型">
-        <input id="charging_pile" placeholder="是否有充电桩">
-        <input id="update_time" placeholder="上传时间">
-        <input id="toll_sign" placeholder="收费牌">
-        <input id="contributors" placeholder="贡献者">
-        <input id="remark" placeholder="备注">
-    
-        <button onclick="addParking()">➕ 添加</button>
-    
-        <div id="list"></div>
-    
-    </div>
+      <div class="container">
+      
+          <h1>🚗 列表</h1>
+      
+          <input id="parking_name" placeholder="停车场名称">
+          <input id="nearest_subway" placeholder="邻近地铁站">
+          <input id="fee_standard" placeholder="是否免费">
+          <input id="garage_type" placeholder="地面/地库类型">
+          <input id="charging_pile" placeholder="是否有充电桩">
+          <input id="update_time" placeholder="上传时间">
+          <input id="toll_sign" placeholder="收费牌">
+          <input id="contributors" placeholder="贡献者">
+          <input id="remark" placeholder="备注">
+      
+          <button onclick="addParking()">➕ 添加</button>
+      
+          <div id="list"></div>
+      
+      </div>
 
-    <script>    
-    $(function(){
-      new Distpicker('#distpicker')
-    })
-    </script>
 
     <script>
       const supabaseClient = window.supabase.createClient(
@@ -155,46 +178,7 @@
         .subscribe()
       
     </script>
-</body>
-</html>
 
-    
-
-    <div>
-        <fieldset>
-            <legend>下拉选择省市区（县）</legend>
-            <form action="#">
-                #<label for="addr-show">您选择的是：
-                #    <input type="text" value="" id="addr-show">
-                #</label>
-                #<br />
-
-                <!--省份选择-->
-                <select id="prov" onchange="showCity(this)">
-                    <option value="">=请选择省份=</option>
-                </select>
-
-                <!--城市选择-->
-                <select id="city" onchange="showCountry(this)">
-                    <option value="">=请选择城市=</option>
-                </select>
-
-                <!--县区选择-->
-                <select id="country" onchange="selecCountry(this)">
-                    <option value="">=请选择县区=</option>
-                </select>
-                <button type="button" class="btn met1" onClick="showAddr()">确定</button>
-            </form>
-        </fieldset>
-
-        
-    </div>
-    
-
-   
-    <script src="city.js"></script>
-    <script src="method01.js"></script>
-
-</body>
+    </body>
 
 </html>
