@@ -130,7 +130,7 @@
         const remark = document.getElementById('remark').value
     
         await supabaseClient.from('parkings').insert({
-          parking_name, nearest_subway, fee_standard, garage_type, charging_pile, update_time, toll_sign, contributors, remark
+          province, city, district, parking_name, nearest_subway, fee_standard, garage_type, charging_pile, update_time, toll_sign, contributors, remark
         })
     
         load()
