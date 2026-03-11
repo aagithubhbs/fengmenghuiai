@@ -129,4 +129,34 @@ select {
 
 #我的部分
 
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
+  padding: 40px;
+} 
+.container {
+  max-width: 700px;
+  margin: auto;
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+} 
+input, button {
+  padding: 10px;
+  margin: 6px 0;
+  width: 100%;
+} 
+button {
+  background: #1677ff;
+  color: white;
+  border: none;
+}
+.parking-item {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+h1 {
+  font-size:10%;
+}
+  
 
