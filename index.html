@@ -130,8 +130,8 @@
           ])
 
         if (error) {
-            alert("添加失败：" + error.message)
-            console.log(error)
+            console.log("❌ 插入失败", error)
+            alert(error.message)
             return
           }
 
