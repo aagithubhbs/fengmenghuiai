@@ -1,7 +1,7 @@
 //****************针对第一种方式的具体js实现部分******************//
 //****************所使用的数据是city.js******************//
-var btn = document.getElementsByClassName('met1')[0];
-var addrShow = document.getElementById('addr-show');
+//var btn = document.getElementsByClassName('met1')[0];
+//var addrShow = document.getElementById('addr-show');
 var prov = document.getElementById('prov');
 var city = document.getElementById('city');
 var country = document.getElementById('country');
@@ -16,7 +16,7 @@ var current = {
 
 /*自动加载省份列表*/
 (function showProv() {
-    btn.disabled = true;
+    //btn.disabled = true;
     var len = provice.length;
     for (var i = 0; i < len; i++) {
         var provOpt = document.createElement('option');
@@ -30,8 +30,8 @@ function showCity(obj) {
     var val = obj.options[obj.selectedIndex].value;
     if (val != current.prov) {
         current.prov = val;
-        addrShow.value = '';
-        btn.disabled = true;
+        //addrShow.value = '';
+        //btn.disabled = true;
         city.length = 1;
         country.length = 1;
     }
@@ -60,8 +60,8 @@ function showCountry(obj) {
     var val = obj.options[obj.selectedIndex].value;
     if (val != current.city) {
         current.city = val;
-        addrShow.value = '';
-        btn.disabled = true;
+        //addrShow.value = '';
+        //btn.disabled = true;
         country.length = 1; //清空之前的内容只留第一个默认选项
     }
 
@@ -88,7 +88,7 @@ function showCountry(obj) {
     if (val != '') {
         var countryLen = provice[provIndex]["city"][cityIndex].districtAndCounty.length;
         if (countryLen == 0) {
-            addrShow.value = current.prov + '-' + current.city;
+            //addrShow.value = current.prov + '-' + current.city;
             return;
         }
         for (var n = 0; n < countryLen; n++) {
@@ -104,7 +104,7 @@ function showCountry(obj) {
 function selecCountry(obj) {
     current.country = obj.options[obj.selectedIndex].value;
     if ((current.city != '') && (current.country != '')) {
-        btn.disabled = false;
+        //btn.disabled = false;
     }
 }
 
