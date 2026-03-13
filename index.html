@@ -111,6 +111,13 @@
         const toll_sign = document.getElementById('toll_sign').value
         const contributors = document.getElementById('contributors').value
         const remark = document.getElementById('remark').value
+
+        console.log({
+              province,
+              city,
+              district,
+              parking_name
+            })
     
         const { data, error } = await supabaseClient.from('parkings').insert([
             { 
