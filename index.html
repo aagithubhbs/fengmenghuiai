@@ -69,10 +69,14 @@
       })
     
       async function load() {
+        
         const { data, error } = await supabaseClient
-          .from('parkings')
-          .select('*')
-          .order('id', { ascending: false })
+              .from('parkings')
+              .select('*')
+              .order('province', { ascending: true })
+              .order('city', { ascending: true })
+              .order('district', { ascending: true })
+
     
         console.log('📦 load() 返回', data, error)
     
@@ -80,22 +84,47 @@
           alert(error.message)
           return
         }
-    
-        document.getElementById('list').innerHTML =
-          data.map(p => `
-            <div class="parking-item">
-              <strong>${p.parking_name}</strong><br>
-              就近${p.nearest_subway}<br>
-              ${p.fee_standard}<br>
-              ${p.garage_type}<br>
-              ${p.charging_pile}<br>
-              ${p.update_time}<br>
-              ${p.toll_sign}<br>
-              ${p.contributors}<br>
-              ${p.remark}<br>
-              
-            </div>
-          `).join('')
+
+        const table = `
+              <table border="1" cellspacing="0" cellpadding="6">
+                <thead>
+                  <tr>
+                    <th>省</th>
+                    <th>市</th>
+                    <th>区</th>
+                    <th>停车场</th>
+                    <th>地铁</th>
+                    <th>收费</th>
+                    <th>类型</th>
+                    <th>充电桩</th>
+                    <th>更新时间</th>
+                    <th>收费牌</th>
+                    <th>贡献者</th>
+                    <th>备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${data.map(p => `
+                    <tr>
+                      <td>${p.province || ""}</td>
+                      <td>${p.city || ""}</td>
+                      <td>${p.district || ""}</td>
+                      <td>${p.parking_name || ""}</td>
+                      <td>${p.nearest_subway || ""}</td>
+                      <td>${p.fee_standard || ""}</td>
+                      <td>${p.garage_type || ""}</td>
+                      <td>${p.charging_pile || ""}</td>
+                      <td>${p.update_time || ""}</td>
+                      <td>${p.toll_sign || ""}</td>
+                      <td>${p.contributors || ""}</td>
+                      <td>${p.remark || ""}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+          `
+
+        document.getElementById('list').innerHTML = table
       }
     
       async function addParking() {
