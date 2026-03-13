@@ -113,7 +113,7 @@
         const remark = document.getElementById('remark').value
     
         await supabaseClient.from('parkings').insert([
-                  {
+                  
                       province,
                       city,
                       district,
@@ -126,7 +126,7 @@
                       toll_sign,
                       contributors,
                       remark
-                    }
+                    
           ])
 
         if (error) {
