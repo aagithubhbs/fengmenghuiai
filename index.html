@@ -135,7 +135,30 @@
               </table>
           `
 
-        document.getElementById('list').innerHTML = table
+        
+        document.getElementById('list').innerHTML = `
+                                                    <table class="parking-table">
+                                                    <thead>
+                                                    <tr>
+                                                    <th>省</th>
+                                                    <th>市</th>
+                                                    <th>区</th>
+                                                    <th>停车场</th>
+                                                    <th>地铁</th>
+                                                    <th>收费</th>
+                                                    <th>类型</th>
+                                                    <th>充电桩</th>
+                                                    <th>更新时间</th>
+                                                    <th>收费牌</th>
+                                                    <th>贡献者</th>
+                                                    <th>备注</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    ${rows}
+                                                    </tbody>
+                                                    </table>
+                                                    `
       }
     
       async function addParking() {
