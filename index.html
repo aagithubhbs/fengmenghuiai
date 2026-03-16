@@ -103,22 +103,34 @@
                   </tr>
                 </thead>
                 <tbody>
-                  ${data.map(p => `
-                    <tr>
-                      <td>${p.province || ""}</td>
-                      <td>${p.city || ""}</td>
-                      <td>${p.district || ""}</td>
-                      <td>${p.parking_name || ""}</td>
-                      <td>${p.nearest_subway || ""}</td>
-                      <td>${p.fee_standard || ""}</td>
-                      <td>${p.garage_type || ""}</td>
-                      <td>${p.charging_pile || ""}</td>
-                      <td>${p.update_time || ""}</td>
-                      <td>${p.toll_sign || ""}</td>
-                      <td>${p.contributors || ""}</td>
-                      <td>${p.remark || ""}</td>
-                    </tr>
-                  `).join('')}
+                    let lastDistrict = ""
+
+                        const rows = data.map(p => {
+                        
+                          const borderStyle = p.district !== lastDistrict
+                              ? "style='border-top:3px solid #999'"
+                              : ""
+                        
+                          lastDistrict = p.district
+                        
+                          return `
+                            <tr ${borderStyle}>
+                              <td>${p.province || ""}</td>
+                              <td>${p.city || ""}</td>
+                              <td>${p.district || ""}</td>
+                              <td>${p.parking_name || ""}</td>
+                              <td>${p.nearest_subway || ""}</td>
+                              <td>${p.fee_standard || ""}</td>
+                              <td>${p.garage_type || ""}</td>
+                              <td>${p.charging_pile || ""}</td>
+                              <td>${p.update_time || ""}</td>
+                              <td>${p.toll_sign || ""}</td>
+                              <td>${p.contributors || ""}</td>
+                              <td>${p.remark || ""}</td>
+                            </tr>
+                          `
+                        }).join("")
+                  
                 </tbody>
               </table>
           `
